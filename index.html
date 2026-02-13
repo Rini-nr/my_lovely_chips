@@ -3,234 +3,257 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Structural Love Project</title>
+<title>Structurally Yours - Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
-font-family:Segoe UI;
-background:linear-gradient(#0f1a24,#091017);
-color:#4dd0e1;
-text-align:center;
 overflow:hidden;
-transition:background 3s;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(to bottom,#ffeef5,#ffd6e8,#ffe8f0);
+color:#5a4e4d;
+text-align:center;
+transition:background 5s;
 }
 
-.sunrise{
-background:linear-gradient(#ff9966,#ff5e62);
+/* Sunset transition */
+.sunset{
+background:linear-gradient(to bottom,#ff9a9e,#fecfef,#fbc2eb);
+}
+
+/* Night mode */
+.night{
+background:linear-gradient(to bottom,#1a1a2e,#16213e,#0f3460);
 color:white;
 }
 
-h1{
-margin-top:30px;
-animation:glow 2s infinite alternate;
+/* Clouds */
+.cloud{
+position:absolute;
+background:white;
+border-radius:50%;
+opacity:0.5;
+filter:blur(25px);
+animation:moveClouds 70s linear infinite;
+}
+@keyframes moveClouds{
+from{transform:translateX(-200px);}
+to{transform:translateX(120vw);}
 }
 
-@keyframes glow{
-from{text-shadow:0 0 10px #4dd0e1;}
-to{text-shadow:0 0 40px #4dd0e1;}
+/* Glass Card */
+.card{
+position:relative;
+margin:120px auto;
+padding:40px;
+width:85%;
+max-width:650px;
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(15px);
+border-radius:25px;
+box-shadow:0 10px 35px rgba(0,0,0,0.12);
 }
+
+/* Romantic font */
+h1{
+font-family:'Great Vibes',cursive;
+font-size:60px;
+color:#c9184a;
+}
+
+h2{font-weight:300;}
 
 button{
-padding:12px 20px;
-margin:10px;
-background:#4dd0e1;
+padding:12px 25px;
 border:none;
-font-weight:bold;
+border-radius:30px;
+background:#ffcad4;
 cursor:pointer;
 transition:0.3s;
 }
 button:hover{
-transform:scale(1.1);
-background:#00acc1;
+background:#f4acb7;
+transform:translateY(-3px);
 }
 
-.hidden{display:none;}
-
-/* Countdown */
-#countdown{
+/* Sakura petals */
+.petal{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:80px;
-z-index:9999;
-}
-
-/* Hearts */
-.heart{
-position:fixed;
+top:-10px;
 font-size:20px;
-animation:float 6s linear infinite;
+animation:fall linear infinite;
+}
+@keyframes fall{
+to{transform:translateY(110vh) rotate(360deg);}
+}
+
+/* Fireflies */
+.firefly{
+position:fixed;
+width:6px;
+height:6px;
+background:#fffacd;
+border-radius:50%;
+box-shadow:0 0 10px #fffacd;
+animation:float 6s ease-in-out infinite alternate;
 }
 @keyframes float{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);}
+from{transform:translateY(0);}
+to{transform:translateY(-20px);}
 }
 
-/* Fireworks */
-.fire{
-position:fixed;
-width:8px;
-height:8px;
-background:gold;
-border-radius:50%;
-animation:boom 1s ease-out forwards;
+/* Love meter */
+#meterContainer{
+width:80%;
+height:20px;
+background:#eee;
+margin:20px auto;
+border-radius:10px;
+overflow:hidden;
 }
-@keyframes boom{
-from{transform:scale(1);opacity:1;}
-to{transform:scale(8);opacity:0;}
+#meter{
+width:0;
+height:100%;
+background:#ff4d6d;
+transition:width 3s;
 }
 
-/* Kiss popup */
-#kiss{
+/* Ring */
+#ring{
+font-size:80px;
+display:none;
+animation:pop 1s ease forwards;
+}
+@keyframes pop{
+from{transform:scale(0);}
+to{transform:scale(1);}
+}
+
+/* Typewriter */
+#letter{
+margin-top:20px;
+min-height:100px;
+font-style:italic;
+}
+
+/* Final message */
+#final{
 position:fixed;
-top:40%;
+top:45%;
 left:50%;
 transform:translate(-50%,-50%);
-background:white;
-color:black;
-padding:25px;
+font-family:'Great Vibes',cursive;
+font-size:70px;
 display:none;
-z-index:999;
-border-radius:10px;
-}
-
-canvas{
-position:fixed;
-top:0;
-left:0;
-pointer-events:none;
 }
 </style>
 </head>
 <body>
 
-<div id="countdown">3</div>
-
 <audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b6b5e4a8d.mp3">
 </audio>
 
-<canvas id="droneCanvas"></canvas>
+<div id="cloudContainer"></div>
 
-<h1 id="mainTitle"></h1>
-<h2 id="subText"></h2>
+<div class="card">
+<h1>Happy Valentine’s Day, My Engineer 🌸🏗️</h1>
+<h2>Builder of bridges… and my forever home.</h2>
 
-<p>📍 First Meeting – Foundation Strong</p>
-<p>💬 Fights – Seismic Proof Certified</p>
-<p>💍 Marriage – Permanent Load Bearing Structure</p>
-<p>🏡 Future – No Demolition Clause</p>
+<p id="days"></p>
 
-<button onclick="approve()">Grant Lifetime Approval</button>
-
-<div id="proposal" class="hidden">
-<h2>Chief Engineer 👷‍♂️</h2>
-<button onclick="accepted()">YES ❤️</button>
-<button id="noBtn">No 😏</button>
+<div id="meterContainer">
+<div id="meter"></div>
 </div>
 
-<div id="kiss">
-Inspection Failed ❌<br><br>
-One Kiss Required 💋<br><br>
-<button onclick="closeKiss()">Done 😌</button>
+<div id="ring">💍</div>
+
+<p id="letter"></p>
+
+<button onclick="startLove()">Approve Structural Love 💌</button>
 </div>
+
+<div id="final">Structurally Yours, Forever 💕</div>
 
 <script>
 
-const husbandName="BUJJOO";
-const mode="valentine"; // change to birthday if needed
+/* Set wedding date */
+const weddingDate = new Date("2022-06-24");
+const today = new Date();
+const days = Math.floor((today - weddingDate)/(1000*60*60*24));
+document.getElementById("days").innerHTML =
+"Married for "+days+" days of certified structural stability 💞";
 
-document.getElementById("mainTitle").innerHTML=
-(mode==="birthday"?"Happy Birthday ":"Happy Valentine's ")+husbandName+" 💙🏗️";
-
-document.getElementById("subText").innerHTML=
-"Chief Engineer "+husbandName+", this structure is lifetime approved.";
-
-let count=3;
-let cd=document.getElementById("countdown");
-
-let timer=setInterval(()=>{
-count--;
-if(count===0){
-cd.innerHTML="❤️";
-setTimeout(()=>{cd.style.display="none";},1000);
-clearInterval(timer);
-}else{
-cd.innerHTML=count;
-}
-},1000);
-
-/* music start */
+/* Ocean sound */
 document.body.addEventListener("click",()=>{
 document.getElementById("music").play();
 },{once:true});
 
-/* floating hearts */
-setInterval(()=>{
-let h=document.createElement("div");
-h.className="heart";
-h.innerHTML="💖";
-h.style.left=Math.random()*window.innerWidth+"px";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),6000);
-},500);
-
-/* drone writing name */
-const canvas=document.getElementById("droneCanvas");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let x=0;
-function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-ctx.font="50px Segoe UI";
-ctx.fillStyle="rgba(255,255,255,0.3)";
-ctx.fillText("💙 "+husbandName+" 💙",x,200);
-x+=2;
-if(x>canvas.width) x=-300;
-requestAnimationFrame(draw);
+/* Clouds */
+const cloudContainer=document.getElementById("cloudContainer");
+for(let i=0;i<5;i++){
+let cloud=document.createElement("div");
+cloud.className="cloud";
+cloud.style.width=Math.random()*250+150+"px";
+cloud.style.height="90px";
+cloud.style.top=Math.random()*150+"px";
+cloud.style.animationDuration=(50+Math.random()*40)+"s";
+cloudContainer.appendChild(cloud);
 }
-draw();
 
-function approve(){
-document.body.classList.add("sunrise");
-document.getElementById("proposal").classList.remove("hidden");
-document.getElementById("kiss").style.display="block";
+/* Sakura petals */
+setInterval(()=>{
+let petal=document.createElement("div");
+petal.className="petal";
+petal.innerHTML="🌸";
+petal.style.left=Math.random()*window.innerWidth+"px";
+petal.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(petal);
+setTimeout(()=>petal.remove(),12000);
+},350);
 
-/* fireworks */
-for(let i=0;i<50;i++){
+/* Typewriter letter */
+const message = "You are my foundation, my strongest pillar, my forever design. No cracks, no failures — just a lifetime contract of love.";
+let i=0;
+function typeWriter(){
+if(i<message.length){
+document.getElementById("letter").innerHTML += message.charAt(i);
+i++;
+setTimeout(typeWriter,40);
+}
+}
+
+/* Fireflies */
+function createFireflies(){
+for(let i=0;i<30;i++){
 let f=document.createElement("div");
-f.className="fire";
+f.className="firefly";
 f.style.left=Math.random()*window.innerWidth+"px";
 f.style.top=Math.random()*window.innerHeight+"px";
 document.body.appendChild(f);
-setTimeout(()=>f.remove(),1000);
 }
 }
 
-function accepted(){
-alert("Lifetime Contract Signed 💙🏗️\nUnlimited Love Supply.\nDemolition Not Allowed.");
+/* Main sequence */
+function startLove(){
+document.getElementById("meter").style.width="100%";
+document.getElementById("ring").style.display="block";
+typeWriter();
+
+setTimeout(()=>document.body.classList.add("sunset"),3000);
+setTimeout(()=>{
+document.body.classList.remove("sunset");
+document.body.classList.add("night");
+createFireflies();
+},6000);
+
+setTimeout(()=>{
+document.getElementById("final").style.display="block";
+},8000);
 }
 
-function closeKiss(){
-document.getElementById("kiss").style.display="none";
-}
-
-const noBtn=document.getElementById("noBtn");
-noBtn.addEventListener("mouseover",()=>{
-noBtn.style.position="absolute";
-noBtn.style.top=Math.random()*400+"px";
-noBtn.style.left=Math.random()*400+"px";
-});
 </script>
-
 </body>
 </html>

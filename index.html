@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,38 +18,6 @@ text-align:center;
 transition:background 5s;
 }
 
-/* Sunset & Night */
-.sunset{
-background:linear-gradient(to bottom,#ff9a9e,#fecfef,#fbc2eb);
-}
-.night{
-background:linear-gradient(to bottom,#1a1a2e,#16213e,#0f3460);
-color:white;
-}
-
-/* Clouds */
-#cloudContainer{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:200px;
-overflow:hidden;
-z-index:-1;
-}
-.cloud{
-position:absolute;
-background:white;
-border-radius:50%;
-opacity:0.5;
-filter:blur(25px);
-animation:moveClouds 70s linear infinite;
-}
-@keyframes moveClouds{
-from{transform:translateX(-200px);}
-to{transform:translateX(120vw);}
-}
-
 /* Glass Card */
 .card{
 position:relative;
@@ -63,15 +31,12 @@ border-radius:25px;
 box-shadow:0 10px 35px rgba(0,0,0,0.12);
 }
 
-/* Fonts */
 h1{
 font-family:'Great Vibes',cursive;
 font-size:60px;
 color:#c9184a;
 }
-h2{font-weight:300;}
 
-/* Button */
 button{
 padding:12px 25px;
 border:none;
@@ -79,25 +44,13 @@ border-radius:30px;
 background:#ffcad4;
 cursor:pointer;
 transition:0.3s;
-font-size:16px;
+margin:10px;
 }
 button:hover{
 background:#f4acb7;
 transform:translateY(-3px);
 }
 
-/* Sakura */
-.petal{
-position:fixed;
-top:-10px;
-font-size:20px;
-animation:fall linear infinite;
-}
-@keyframes fall{
-to{transform:translateY(110vh) rotate(360deg);}
-}
-
-/* Love meter */
 #meterContainer{
 width:80%;
 height:20px;
@@ -113,52 +66,19 @@ background:#ff4d6d;
 transition:width 3s;
 }
 
-/* Ring */
-#ring{
-font-size:80px;
-display:none;
-animation:pop 1s ease forwards;
-}
-@keyframes pop{
-from{transform:scale(0);}
-to{transform:scale(1);}
-}
-
-/* Popups */
-.valPopup{
+#proposalBox{
 position:fixed;
-bottom:30px;
-right:30px;
-background:rgba(255,255,255,0.85);
-backdrop-filter:blur(10px);
-padding:15px 25px;
-border-radius:20px;
-box-shadow:0 8px 25px rgba(0,0,0,0.15);
-font-size:14px;
-animation:fadeIn 1s ease;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(255,255,255,0.95);
+padding:30px;
+border-radius:25px;
+box-shadow:0 10px 35px rgba(0,0,0,0.2);
+display:none;
 z-index:9999;
 }
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(20px);}
-to{opacity:1; transform:translateY(0);}
-}
 
-/* Fireflies */
-.firefly{
-position:fixed;
-width:6px;
-height:6px;
-background:#fffacd;
-border-radius:50%;
-box-shadow:0 0 10px #fffacd;
-animation:float 6s ease-in-out infinite alternate;
-}
-@keyframes float{
-from{transform:translateY(0);}
-to{transform:translateY(-20px);}
-}
-
-/* Fireworks */
 .firework{
 position:fixed;
 width:8px;
@@ -171,7 +91,16 @@ from{transform:scale(1);opacity:1;}
 to{transform:scale(8);opacity:0;}
 }
 
-/* Final Message */
+.petal{
+position:fixed;
+top:-10px;
+font-size:20px;
+animation:fall linear infinite;
+}
+@keyframes fall{
+to{transform:translateY(110vh) rotate(360deg);}
+}
+
 #final{
 position:fixed;
 top:45%;
@@ -180,20 +109,19 @@ transform:translate(-50%,-50%);
 font-family:'Great Vibes',cursive;
 font-size:70px;
 display:none;
+color:#c9184a;
 }
 </style>
 </head>
 <body>
 
-<audio id="music" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_0f6e6e7b16.mp3?filename=romantic-background-112191.mp3">
+<!-- SURPRISE MUSIC (starts only when triggered) -->
+<audio id="bgMusic" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9b6f28.mp3?filename=romantic-piano-114187.mp3">
 </audio>
-
-<div id="cloudContainer"></div>
 
 <div class="card">
 <h1>Happy Valentine’s Day, My Engineer 🌸🏗️</h1>
-<h2>Builder of bridges… and my forever home.</h2>
 
 <p id="days"></p>
 
@@ -201,98 +129,79 @@ display:none;
 <div id="meter"></div>
 </div>
 
-<div id="ring">💍</div>
-
-<p id="letter"></p>
-
-<button onclick="startLove()">Approve Structural Love 💌</button>
+<button onclick="openProposal()">Approve Structural Love 💌</button>
 </div>
 
-<div id="final">Structurally Yours, Forever 💕</div>
+<div id="proposalBox">
+<h2>Will you be my forever Valentine? 💕</h2>
+<button onclick="yesLove()">YES ❤️</button>
+<button id="noBtn">NO 😏</button>
+</div>
+
+<div id="final">Structurally Yours Forever 💕</div>
 
 <script>
 
-/* Wedding date */
+/* Wedding Counter */
 const weddingDate = new Date("2022-06-24");
 const today = new Date();
 const days = Math.floor((today - weddingDate)/(1000*60*60*24));
 document.getElementById("days").innerHTML =
 "Married for "+days+" days of certified structural stability 💞";
 
-/* Play music */
-document.body.addEventListener("click",()=>{
-document.getElementById("music").play();
-},{once:true});
+/* Music control */
+const music = document.getElementById("bgMusic");
+music.volume = 0;
 
-/* Clouds */
-const cloudContainer=document.getElementById("cloudContainer");
-for(let i=0;i<5;i++){
-let cloud=document.createElement("div");
-cloud.className="cloud";
-cloud.style.width=Math.random()*250+150+"px";
-cloud.style.height="90px";
-cloud.style.top=Math.random()*150+"px";
-cloud.style.animationDuration=(50+Math.random()*40)+"s";
-cloudContainer.appendChild(cloud);
+/* Open Proposal + start soft music */
+function openProposal(){
+document.getElementById("proposalBox").style.display="block";
+music.play();
+fadeInMusic(0.2); // soft surprise entry
 }
 
-/* Sakura */
-setInterval(()=>{
-let petal=document.createElement("div");
-petal.className="petal";
-petal.innerHTML="🌸";
-petal.style.left=Math.random()*window.innerWidth+"px";
-petal.style.animationDuration=(6+Math.random()*6)+"s";
-document.body.appendChild(petal);
-setTimeout(()=>petal.remove(),12000);
-},350);
-
-/* Typewriter */
-const message = "You are my foundation, my strongest pillar, my forever design. No cracks, no failures — just a lifetime contract of love.";
-let i=0;
-function typeWriter(){
-if(i<message.length){
-document.getElementById("letter").innerHTML += message.charAt(i);
-i++;
-setTimeout(typeWriter,40);
+/* Fade in function */
+function fadeInMusic(targetVolume){
+let fade = setInterval(()=>{
+if(music.volume < targetVolume){
+music.volume += 0.02;
+}else{
+clearInterval(fade);
 }
+},200);
 }
 
-/* Fireflies */
-function createFireflies(){
-for(let i=0;i<30;i++){
-let f=document.createElement("div");
-f.className="firefly";
-f.style.left=Math.random()*window.innerWidth+"px";
-f.style.top=Math.random()*window.innerHeight+"px";
-document.body.appendChild(f);
-}
-}
+/* Fun NO button */
+let noBtn=document.getElementById("noBtn");
+let attempts=0;
 
-/* Popups */
-const popMessages=[
-"🌸 Structural Integrity: 100%",
-"💘 Valentine Mode Activated",
-"🏗️ Foundation Status: Unbreakable",
-"💞 Love Load Capacity: Infinite",
-"💍 Lifetime Contract Confirmed"
-];
+noBtn.addEventListener("mouseover",()=>{
+attempts++;
+noBtn.style.position="absolute";
+noBtn.style.top=Math.random()*300+"px";
+noBtn.style.left=Math.random()*300+"px";
 
-function showPopup(){
-let popup=document.createElement("div");
-popup.className="valPopup";
-popup.innerHTML=popMessages[Math.floor(Math.random()*popMessages.length)];
-document.body.appendChild(popup);
-setTimeout(()=>popup.remove(),3000);
+if(attempts>3){
+alert("Nice try, Engineer 😌 You know the answer is YES.");
 }
-setInterval(showPopup,5000);
+});
+
+/* YES clicked */
+function yesLove(){
+document.getElementById("proposalBox").style.display="none";
+document.getElementById("meter").style.width="100%";
+document.getElementById("final").style.display="block";
+
+fadeInMusic(0.6); // increase volume for grand finale
+launchFireworks();
+}
 
 /* Fireworks */
 function launchFireworks(){
 let duration=5000;
 let interval=100;
 let fireInterval=setInterval(()=>{
-for(let i=0;i<20;i++){
+for(let i=0;i<30;i++){
 let f=document.createElement("div");
 f.className="firework";
 f.style.left=Math.random()*window.innerWidth+"px";
@@ -305,24 +214,16 @@ setTimeout(()=>f.remove(),1200);
 setTimeout(()=>clearInterval(fireInterval),duration);
 }
 
-/* Main sequence */
-function startLove(){
-document.getElementById("meter").style.width="100%";
-document.getElementById("ring").style.display="block";
-typeWriter();
-
-setTimeout(()=>document.body.classList.add("sunset"),3000);
-setTimeout(()=>{
-document.body.classList.remove("sunset");
-document.body.classList.add("night");
-createFireflies();
-},6000);
-
-setTimeout(()=>{
-document.getElementById("final").style.display="block";
-launchFireworks();
-},8000);
-}
+/* Sakura petals */
+setInterval(()=>{
+let petal=document.createElement("div");
+petal.className="petal";
+petal.innerHTML="🌸";
+petal.style.left=Math.random()*window.innerWidth+"px";
+petal.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(petal);
+setTimeout(()=>petal.remove(),12000);
+},350);
 
 </script>
 </body>

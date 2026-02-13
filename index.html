@@ -2,176 +2,233 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Lifetime Structural Approval</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Structural Love Project</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #0f1a24;
-    color: #4dd0e1;
-    overflow-x: hidden;
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(#0f1a24,#091017);
+color:#4dd0e1;
+text-align:center;
+overflow:hidden;
+transition:background 3s;
 }
 
-/* Blueprint Grid */
-body::before {
-    content: "";
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-image:
-        linear-gradient(#1f3a4d 1px, transparent 1px),
-        linear-gradient(90deg, #1f3a4d 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.2;
-    z-index: -1;
+.sunrise{
+background:linear-gradient(#ff9966,#ff5e62);
+color:white;
 }
 
-/* Layout */
-.container {
-    padding: 40px;
+h1{
+margin-top:30px;
+animation:glow 2s infinite alternate;
 }
 
-h1 {
-    text-align: center;
-    text-shadow: 0 0 15px #4dd0e1;
-    cursor: pointer;
+@keyframes glow{
+from{text-shadow:0 0 10px #4dd0e1;}
+to{text-shadow:0 0 40px #4dd0e1;}
 }
 
-section {
-    margin-top: 50px;
+button{
+padding:12px 20px;
+margin:10px;
+background:#4dd0e1;
+border:none;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+button:hover{
+transform:scale(1.1);
+background:#00acc1;
 }
 
-button {
-    padding: 10px 20px;
-    background: #4dd0e1;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 10px 0;
+.hidden{display:none;}
+
+/* Countdown */
+#countdown{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:80px;
+z-index:9999;
 }
 
-.hidden { display: none; }
-
-/* Timeline */
-.timeline {
-    border-left: 3px solid #4dd0e1;
-    padding-left: 20px;
+/* Hearts */
+.heart{
+position:fixed;
+font-size:20px;
+animation:float 6s linear infinite;
 }
-
-.timeline div {
-    margin-bottom: 20px;
-}
-
-/* Stamp */
-.stamp {
-    font-size: 40px;
-    color: red;
-    border: 5px solid red;
-    display: inline-block;
-    padding: 10px;
-    transform: scale(0);
-    transition: transform 0.5s ease-out;
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
 }
 
 /* Fireworks */
-.firework {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: gold;
-    border-radius: 50%;
-    animation: explode 1s ease-out forwards;
+.fire{
+position:fixed;
+width:8px;
+height:8px;
+background:gold;
+border-radius:50%;
+animation:boom 1s ease-out forwards;
+}
+@keyframes boom{
+from{transform:scale(1);opacity:1;}
+to{transform:scale(8);opacity:0;}
 }
 
-@keyframes explode {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(8); opacity: 0; }
+/* Kiss popup */
+#kiss{
+position:fixed;
+top:40%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+color:black;
+padding:25px;
+display:none;
+z-index:999;
+border-radius:10px;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div id="countdown">3</div>
 
-<h1 id="title">STRUCTURAL MASTER PLAN 💙</h1>
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
 
-<section>
-<h2>Project Timeline</h2>
-<div class="timeline">
-    <div>📍 First Meeting – Foundation Laid</div>
-    <div>💬 First Fight – Seismic Test Passed</div>
-    <div>💍 Marriage Day – Structural Completion</div>
-    <div>🏡 Building Our Future – Ongoing Expansion</div>
-</div>
-</section>
+<canvas id="droneCanvas"></canvas>
 
-<section>
-<h2>Memory Gallery</h2>
-<p>Add your image links below:</p>
-<img src="YOUR_PHOTO_1" width="200">
-<img src="YOUR_PHOTO_2" width="200">
-</section>
+<h1 id="mainTitle"></h1>
+<h2 id="subText"></h2>
 
-<section>
-<h2>Final Structural Inspection</h2>
+<p>📍 First Meeting – Foundation Strong</p>
+<p>💬 Fights – Seismic Proof Certified</p>
+<p>💍 Marriage – Permanent Load Bearing Structure</p>
+<p>🏡 Future – No Demolition Clause</p>
+
 <button onclick="approve()">Grant Lifetime Approval</button>
-<div id="stampBox"></div>
-</section>
 
-<section id="proposalSection" class="hidden">
-<h2>Chief Engineer,</h2>
-<h3>Will you continue this project forever? 💍</h3>
+<div id="proposal" class="hidden">
+<h2>Chief Engineer 👷‍♂️</h2>
 <button onclick="accepted()">YES ❤️</button>
 <button id="noBtn">No 😏</button>
-</section>
+</div>
 
+<div id="kiss">
+Inspection Failed ❌<br><br>
+One Kiss Required 💋<br><br>
+<button onclick="closeKiss()">Done 😌</button>
 </div>
 
 <script>
 
-/* Approval Function */
-function approve() {
-    let stamp = document.createElement("div");
-    stamp.className = "stamp";
-    stamp.innerHTML = "APPROVED 💍";
-    document.getElementById("stampBox").appendChild(stamp);
+const husbandName="BUJJOO";
+const mode="valentine"; // change to birthday if needed
 
-    setTimeout(() => stamp.style.transform = "scale(1)", 100);
+document.getElementById("mainTitle").innerHTML=
+(mode==="birthday"?"Happy Birthday ":"Happy Valentine's ")+husbandName+" 💙🏗️";
 
-    for (let i = 0; i < 25; i++) {
-        let firework = document.createElement("div");
-        firework.className = "firework";
-        firework.style.left = Math.random() * window.innerWidth + "px";
-        firework.style.top = Math.random() * window.innerHeight + "px";
-        document.body.appendChild(firework);
-        setTimeout(() => firework.remove(), 1000);
-    }
+document.getElementById("subText").innerHTML=
+"Chief Engineer "+husbandName+", this structure is lifetime approved.";
 
-    document.getElementById("proposalSection").classList.remove("hidden");
+let count=3;
+let cd=document.getElementById("countdown");
+
+let timer=setInterval(()=>{
+count--;
+if(count===0){
+cd.innerHTML="❤️";
+setTimeout(()=>{cd.style.display="none";},1000);
+clearInterval(timer);
+}else{
+cd.innerHTML=count;
+}
+},1000);
+
+/* music start */
+document.body.addEventListener("click",()=>{
+document.getElementById("music").play();
+},{once:true});
+
+/* floating hearts */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*window.innerWidth+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},500);
+
+/* drone writing name */
+const canvas=document.getElementById("droneCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let x=0;
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.font="50px Segoe UI";
+ctx.fillStyle="rgba(255,255,255,0.3)";
+ctx.fillText("💙 "+husbandName+" 💙",x,200);
+x+=2;
+if(x>canvas.width) x=-300;
+requestAnimationFrame(draw);
+}
+draw();
+
+function approve(){
+document.body.classList.add("sunrise");
+document.getElementById("proposal").classList.remove("hidden");
+document.getElementById("kiss").style.display="block";
+
+/* fireworks */
+for(let i=0;i<50;i++){
+let f=document.createElement("div");
+f.className="fire";
+f.style.left=Math.random()*window.innerWidth+"px";
+f.style.top=Math.random()*window.innerHeight+"px";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
 }
 
-/* Accepted */
-function accepted() {
-    alert("Lifetime Contract Signed 💙🏗️💍");
+function accepted(){
+alert("Lifetime Contract Signed 💙🏗️\nUnlimited Love Supply.\nDemolition Not Allowed.");
 }
 
-/* Moving No Button */
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
-    noBtn.style.position = "absolute";
-    noBtn.style.top = Math.random() * 400 + "px";
-    noBtn.style.left = Math.random() * 400 + "px";
-});
+function closeKiss(){
+document.getElementById("kiss").style.display="none";
+}
 
-/* Easter Egg – Click Title 5 Times */
-let clickCount = 0;
-document.getElementById("title").addEventListener("click", () => {
-    clickCount++;
-    if (clickCount === 5) {
-        alert("Secret Message: You are my strongest pillar and my safest home ❤️");
-    }
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+noBtn.style.position="absolute";
+noBtn.style.top=Math.random()*400+"px";
+noBtn.style.left=Math.random()*400+"px";
 });
 </script>
 

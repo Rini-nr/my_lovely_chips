@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lifetime Structural Approval</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0f1a24;
+    color: #4dd0e1;
+    overflow-x: hidden;
+}
+
+/* Blueprint Grid */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(#1f3a4d 1px, transparent 1px),
+        linear-gradient(90deg, #1f3a4d 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+/* Layout */
+.container {
+    padding: 40px;
+}
+
+h1 {
+    text-align: center;
+    text-shadow: 0 0 15px #4dd0e1;
+    cursor: pointer;
+}
+
+section {
+    margin-top: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #4dd0e1;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.hidden { display: none; }
+
+/* Timeline */
+.timeline {
+    border-left: 3px solid #4dd0e1;
+    padding-left: 20px;
+}
+
+.timeline div {
+    margin-bottom: 20px;
+}
+
+/* Stamp */
+.stamp {
+    font-size: 40px;
+    color: red;
+    border: 5px solid red;
+    display: inline-block;
+    padding: 10px;
+    transform: scale(0);
+    transition: transform 0.5s ease-out;
+}
+
+/* Fireworks */
+.firework {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: gold;
+    border-radius: 50%;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(8); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1 id="title">STRUCTURAL MASTER PLAN 💙</h1>
+
+<section>
+<h2>Project Timeline</h2>
+<div class="timeline">
+    <div>📍 First Meeting – Foundation Laid</div>
+    <div>💬 First Fight – Seismic Test Passed</div>
+    <div>💍 Marriage Day – Structural Completion</div>
+    <div>🏡 Building Our Future – Ongoing Expansion</div>
+</div>
+</section>
+
+<section>
+<h2>Memory Gallery</h2>
+<p>Add your image links below:</p>
+<img src="YOUR_PHOTO_1" width="200">
+<img src="YOUR_PHOTO_2" width="200">
+</section>
+
+<section>
+<h2>Final Structural Inspection</h2>
+<button onclick="approve()">Grant Lifetime Approval</button>
+<div id="stampBox"></div>
+</section>
+
+<section id="proposalSection" class="hidden">
+<h2>Chief Engineer,</h2>
+<h3>Will you continue this project forever? 💍</h3>
+<button onclick="accepted()">YES ❤️</button>
+<button id="noBtn">No 😏</button>
+</section>
+
+</div>
+
+<script>
+
+/* Approval Function */
+function approve() {
+    let stamp = document.createElement("div");
+    stamp.className = "stamp";
+    stamp.innerHTML = "APPROVED 💍";
+    document.getElementById("stampBox").appendChild(stamp);
+
+    setTimeout(() => stamp.style.transform = "scale(1)", 100);
+
+    for (let i = 0; i < 25; i++) {
+        let firework = document.createElement("div");
+        firework.className = "firework";
+        firework.style.left = Math.random() * window.innerWidth + "px";
+        firework.style.top = Math.random() * window.innerHeight + "px";
+        document.body.appendChild(firework);
+        setTimeout(() => firework.remove(), 1000);
+    }
+
+    document.getElementById("proposalSection").classList.remove("hidden");
+}
+
+/* Accepted */
+function accepted() {
+    alert("Lifetime Contract Signed 💙🏗️💍");
+}
+
+/* Moving No Button */
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", () => {
+    noBtn.style.position = "absolute";
+    noBtn.style.top = Math.random() * 400 + "px";
+    noBtn.style.left = Math.random() * 400 + "px";
+});
+
+/* Easter Egg – Click Title 5 Times */
+let clickCount = 0;
+document.getElementById("title").addEventListener("click", () => {
+    clickCount++;
+    if (clickCount === 5) {
+        alert("Secret Message: You are my strongest pillar and my safest home ❤️");
+    }
+});
+</script>
+
+</body>
+</html>
